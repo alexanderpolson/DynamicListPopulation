@@ -13,13 +13,13 @@ public class ItemPageNavigation<MP: ModelProvider>: ObservableObject {
     // Associated types-fu:
     // Source: https://www.hackingwithswift.com/example-code/language/how-to-fix-the-error-protocol-can-only-be-used-as-a-generic-constraint-because-it-has-self-or-associated-type-requirements
     private var modelProvider: MP
-    @Published private(set) var items: [MP.ModelType]
-    private(set) var nextPageReference: MP.NextPageReference?
+    @Published public private(set) var items: [MP.ModelType]
+    private var nextPageReference: MP.NextPageReference?
     private var pageSize: Int
     private var initialCapacity: Int
     private var tailUpdateModel: MP.ModelType?
     
-    init(initialCapacity: Int = 20, pageSize: Int = 20, modelProvider: MP) {
+    public init(initialCapacity: Int = 20, pageSize: Int = 20, modelProvider: MP) {
         self.modelProvider = modelProvider
         self.items = []
         self.pageSize = pageSize
@@ -28,7 +28,7 @@ public class ItemPageNavigation<MP: ModelProvider>: ObservableObject {
         populateNextPage()
     }
     
-    func updateItems(model: MP.ModelType) {
+    public func updateItems(model: MP.ModelType) {
         // TODO: Figure out how to clean up older entries?
         // When deleting items, the list jumps up, causing even more items to
         // be added.
