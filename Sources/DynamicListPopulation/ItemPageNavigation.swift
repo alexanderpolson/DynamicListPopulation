@@ -9,7 +9,7 @@ import Foundation
 
 // Source: https://www.hackingwithswift.com/quick-start/swiftui/whats-the-difference-between-observedobject-state-and-environmentobject
 // Source: https://stackoverflow.com/questions/59868393/swiftui-pagination-for-list-object
-class ItemPageNavigation<MP: ModelProvider>: ObservableObject {
+public class ItemPageNavigation<MP: ModelProvider>: ObservableObject {
     // Associated types-fu:
     // Source: https://www.hackingwithswift.com/example-code/language/how-to-fix-the-error-protocol-can-only-be-used-as-a-generic-constraint-because-it-has-self-or-associated-type-requirements
     private var modelProvider: MP

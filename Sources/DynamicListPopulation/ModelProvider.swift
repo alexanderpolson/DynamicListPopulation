@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ModelProvider {
+public protocol ModelProvider {
     associatedtype ModelType: Identifiable
     associatedtype NextPageReference
     

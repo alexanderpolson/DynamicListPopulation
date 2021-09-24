@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct ModelPage<M, T> {
+public struct ModelPage<M, T> {
     var items: [M]
     var nextPageToken: T?
+    
+    public init(items: [M], nextPageToken: T?) {
+        self.items = items
+        self.nextPageToken = nextPageToken
+    }
 }
