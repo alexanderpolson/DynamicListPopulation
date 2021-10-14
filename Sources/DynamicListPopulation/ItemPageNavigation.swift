@@ -52,15 +52,27 @@ public class ItemPageNavigation<MP: ModelProvider>: ObservableObject {
         
         print("Populating next page")
         
-        let newItemsPage = modelProvider.getModelPage(nextPageReference: nextPageReference, pageSize: pageSize)
-        nextPageReference = newItemsPage.nextPageToken
-        // Source: https://www.hackingwithswift.com/example-code/language/how-to-append-one-array-to-another-array
-        items += newItemsPage.items
-        
-        // Update population models so that the list updates properly
-        // TODO: This will need to cover the cases where we're at the beginning or end of the available items.
-        let tailUpdateIndex = items.count - 15
-        tailUpdateModel = items[tailUpdateIndex]
-        print("Setting tail update index to \(tailUpdateIndex) (id: \(tailUpdateModel!.id)")
+        modelProvider.getModelPage(nextPageReference: nextPageReference, pageSize: pageSize) { newItemsPageResult in
+            switch newItemsPageResult {
+            case .success(let newItemsPage):
+                self.nextPageReference = newItemsPage.nextPageToken
+                // Source: https://www.hackingwithswift.com/example-code/language/how-to-append-one-array-to-another-array
+                if !newItemsPage.items.isEmpty {
+                    self.items += newItemsPage.items
+
+                    // Update population models so that the list updates properly
+                    // TODO: This will need to cover the cases where we're at the beginning or end of the available items.
+                    if self.nextPageReference != nil {
+                        let tailUpdateIndex = self.items.count - (self.pageSize / 2)
+                        self.tailUpdateModel = self.items[tailUpdateIndex]
+                        print("Setting tail update index to \(tailUpdateIndex) (id: \(self.tailUpdateModel!.id)")
+                    }
+
+                }
+            case .failure(let error):
+                // TODO: Do something with the error.
+                print(error)
+            }
+        }
     }
 }

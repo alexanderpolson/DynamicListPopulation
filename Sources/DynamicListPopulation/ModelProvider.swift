@@ -11,5 +11,5 @@ public protocol ModelProvider {
     associatedtype ModelType: Identifiable
     associatedtype NextPageReference
     
-    func getModelPage(nextPageReference: NextPageReference?, pageSize: Int) -> ModelPage<ModelType, NextPageReference>
+    func getModelPage(nextPageReference: NextPageReference?, pageSize: Int, completionHandler: @escaping (Result<ModelPage<ModelType, NextPageReference>, Error>) -> Void)
 }
