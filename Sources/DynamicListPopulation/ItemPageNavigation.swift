@@ -28,6 +28,11 @@ public class ItemPageNavigation<MP: ModelProvider>: ObservableObject {
         populateNextPage()
     }
     
+    public func refresh() {
+        self.nextPageReference = nil
+        populateNextPage()
+    }
+    
     public func updateItems(model: MP.ModelType) {
         // TODO: Figure out how to clean up older entries?
         // When deleting items, the list jumps up, causing even more items to
@@ -55,7 +60,16 @@ public class ItemPageNavigation<MP: ModelProvider>: ObservableObject {
         modelProvider.getModelPage(nextPageReference: nextPageReference, pageSize: pageSize) { newItemsPageResult in
             switch newItemsPageResult {
             case .success(let newItemsPage):
+                // When loading the first page, make sure that items is empty. This
+                // covers the refresh use case.
+                if self.nextPageReference == nil {
+                    // This emptying is done here to make sure we have the updated
+                    // first page avaialble right away.
+                    self.items = []
+                }
+                
                 self.nextPageReference = newItemsPage.nextPageToken
+                
                 // Source: https://www.hackingwithswift.com/example-code/language/how-to-append-one-array-to-another-array
                 if !newItemsPage.items.isEmpty {
                     self.items += newItemsPage.items
